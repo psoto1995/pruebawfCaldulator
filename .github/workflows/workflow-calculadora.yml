@@ -1,0 +1,66 @@
+name: Calculadora python ejemplo workflow
+
+on: # Evento desencadenante del workflow
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout del repositorio # es decir, clonamos el repositorio en nuestro entorno creado
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
+      - name: Instalamos dependencias
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+  test:
+    runs-on: ubuntu-latest
+    needs: build  # Indica que ee ejecuta después de 'build',por lo tanto, es una ejecución secuencial
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
+      - name: Instalar dependencias
+        run: |
+          pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Ejecutar tests
+        run: |
+          pytest --maxfail=1 --disable-warnings -q
+
+  run-calculator:
+    runs-on: ubuntu-latest
+    needs: test  # Se ejecuta después de 'test'
+    steps:
+      - name: Checkout del repositorio
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.13'
+
+      - name: Instalamos dependencias
+        run: |
+          pip install -r requirements.txt
+
+      - name: Ejecutar calculadora
+        run: |
+          echo "== Entorno de Producción =="
+          python calculator.py
