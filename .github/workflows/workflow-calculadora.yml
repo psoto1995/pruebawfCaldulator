@@ -24,7 +24,7 @@ jobs:
           pip install -r requirements.txt
 
   test:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-22.04
     needs: build  # Indica que ee ejecuta después de 'build',por lo tanto, es una ejecución secuencial
     steps:
       - name: Checkout del repositorio
