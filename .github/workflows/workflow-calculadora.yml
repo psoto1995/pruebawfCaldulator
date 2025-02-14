@@ -1,4 +1,4 @@
-name: Calculadora python ejemplo workflows
+name: Calculadora python ejemplo workflow
 
 on: # Evento desencadenante del workflow
   push:
